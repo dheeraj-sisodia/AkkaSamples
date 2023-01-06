@@ -1,4 +1,4 @@
-package com.deloitte.streams
+package com.examples.streams
 
 import java.nio.file.{Path, Paths}
 import akka.actor.ActorSystem

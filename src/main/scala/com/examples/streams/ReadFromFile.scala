@@ -1,4 +1,4 @@
-package com.deloitte.streams
+package com.examples.streams
 
 import akka.actor.ActorSystem
 import com.typesafe.scalalogging.LazyLogging
