@@ -10,7 +10,7 @@ object StreamsExample2 extends App with LazyLogging {
   implicit val system = ActorSystem("actor-system")
   implicit val dispatcher = system.dispatcher
 
-  val processor = new FileProcessor("C:\\work\\Akka\\samples\\src\\main\\resources\\data\\weblog.csv")
+  val processor = new FileProcessor("data/weblog.csv")
   val processorResult: Future[Seq[(String, Long)]] = processor.result
 
   processorResult.onComplete {

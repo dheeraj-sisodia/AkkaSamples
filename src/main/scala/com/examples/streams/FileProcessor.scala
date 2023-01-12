@@ -7,6 +7,7 @@ import akka.stream.OverflowStrategy
 import akka.util.ByteString
 import akka.NotUsed
 
+import java.io.File
 import scala.concurrent.{ExecutionContext, Future}
 
 final class FileProcessor(path: String)(implicit system: ActorSystem, ec: ExecutionContext) {
@@ -26,8 +27,8 @@ final class FileProcessor(path: String)(implicit system: ActorSystem, ec: Execut
       .mergeSubstreams
       .runWith(Sink.seq[(String, Long)])
 
-  private val createPath: Path =
-    Paths.get(path)
+  private val createPath =
+    new File(getClass.getClassLoader.getResource(path).getFile()).toPath()
 
   private val lineDelimiter: Flow[ByteString, ByteString, NotUsed] =
     Framing.delimiter(
