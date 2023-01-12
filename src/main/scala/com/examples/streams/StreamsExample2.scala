@@ -5,7 +5,7 @@ import com.typesafe.scalalogging.LazyLogging
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-object ReadFromFile extends App with LazyLogging {
+object StreamsExample2 extends App with LazyLogging {
 
   implicit val system = ActorSystem("actor-system")
   implicit val dispatcher = system.dispatcher
