@@ -8,11 +8,17 @@ import akka.http.scaladsl.Http
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-object AkkaHttpExample2 {
-
+object AkkaHttpExample2 extends App {
+  val system: ActorSystem[SetupActor.Message] =
+    ActorSystem(SetupActor("localhost", 8080), "BuildJobsServer")
+}
+object SetupActor {
   sealed trait Message
+
   private final case class StartFailed(cause: Throwable) extends Message
+
   private final case class Started(binding: ServerBinding) extends Message
+
   case object Stop extends Message
 
   def apply(host: String, port: Int): Behavior[Message] = Behaviors.setup { ctx =>
@@ -26,7 +32,7 @@ object AkkaHttpExample2 {
       Http().newServerAt(host, port).bind(routes.theJobRoutes)
     ctx.pipeToSelf(serverBinding) {
       case Success(binding) => Started(binding)
-      case Failure(ex)      => StartFailed(ex)
+      case Failure(ex) => StartFailed(ex)
     }
 
     def running(binding: ServerBinding): Behavior[Message] =
@@ -61,11 +67,6 @@ object AkkaHttpExample2 {
       }
 
     starting(wasStopped = false)
-  }
-
-  def main(args: Array[String]): Unit = {
-    val system: ActorSystem[AkkaHttpExample2.Message] =
-      ActorSystem(AkkaHttpExample2("localhost", 8080), "BuildJobsServer")
   }
 }
 
