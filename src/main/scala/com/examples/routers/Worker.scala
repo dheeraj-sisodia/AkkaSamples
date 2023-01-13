@@ -2,12 +2,10 @@ package com.examples.routers
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
-import com.examples.routers.RouterExample1.{Command, DoLog}
+import com.examples.routers.MasterActor.{Command, DoLog}
 
 import java.lang.Thread.sleep
 object Worker {
-
-
   def apply(): Behavior[Command] = Behaviors.setup { context =>
     context.log.info("Starting worker")
 
