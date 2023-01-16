@@ -6,13 +6,13 @@ import akka.actor.typed.{ActorSystem, Behavior, SupervisorStrategy}
 import java.lang.Thread.sleep
 
 object RouterExample1 extends App {
-  val system: ActorSystem[MasterActor.DoLog] = ActorSystem(MasterActor(), "my-actor-system")
-  system ! MasterActor.DoLog("World")
+  val system: ActorSystem[ExampleActor1.DoLog] = ActorSystem(ExampleActor1(), "my-actor-system")
+  system ! ExampleActor1.DoLog("Hello World")
   sleep(20000)
   system.terminate()
 }
 
-object MasterActor {
+object ExampleActor1 {
   case class DoLog(text: String) extends Command
 
   sealed trait Command
@@ -31,4 +31,17 @@ object MasterActor {
         Behaviors.same
       }
     }
+
+  object Worker {
+    def apply(): Behavior[Command] = Behaviors.setup { context =>
+      context.log.info("Starting worker")
+
+      Behaviors.receiveMessage {
+        case DoLog(text) =>
+          sleep(5000)
+          context.log.info("Got message {}", text)
+          Behaviors.same
+      }
+    }
+  }
 }
